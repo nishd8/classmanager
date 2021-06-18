@@ -1,0 +1,229 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Class Manager</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap');
+        *{
+            font-family: 'Roboto Mono', monospace;
+        }
+        .box{
+            padding: 10px;
+            margin-bottom: 10px;
+            background-color: #e9ecf3;
+            border: 1px solid #d5d5d5;
+            border-radius: 5px;
+        }
+        .links{
+            text-decoration: 0;
+            color: white;
+        }
+        .links:hover{
+            color: white;
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-dark bg-dark">
+        <a class="navbar-brand" href="#">Class Management API</a>
+    </nav>
+    <div style="display: flex;justify-content: space-between;" class="bg-dark text-white p-3 mb-2 sticky-top">
+        <a class="links" href="#userManagement">User Management Endpoints</a>
+        <a class="links" href="#classManagement">Class Management Endpoints</a>
+        <a class="links" href="#participationManagement">Participation Management Endpoints</a>
+    </div>
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-6 offset-lg-3" id="main" style="height: 85vh;overflow: auto;">
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+<script>
+    const apiJSON=[
+        {
+            title:"User Management Endpoints",
+            id:"userManagement"
+        },
+        {
+            title:"Sign-Up Endpoint",
+            url:"/users/signup",
+            method:"POST",
+            headers:"None",
+            payload:"{name:'',email:'',password:'',isTeacher:''}",
+            response:"User Registered - 200",
+            error:"DB Error Detail - 400",
+            
+        },
+        {
+            title:"Sign-In Endpoint",
+            url:"/users/signin",
+            method:"POST",
+            headers:"None",
+            payload:"{email:'',password:''}",
+            response:"{id:'',name:'',email:'',session_token:'',is_teacher:''}",
+            error:"DB Error Detail - 400",
+        },
+        {
+            title:"Sign-Out Endpoint",
+            url:"/users/signout",
+            method:"GET",
+            headers:"{authorization:'sessionToken'}",
+            payload:"None",
+            response:"User Signed Out",
+            error:"DB Error Detail - 400",
+        },
+        {
+            title:"Class Management Endpoints",
+            id:"classManagement"
+        },
+        {
+            title:"Create Class Endpoint",
+            url:"/classes/create",
+            method:"POST",
+            headers:"{authorization:'sessionToken'}",
+            payload:"{teacherId:'',classDate:'',classStart:'',classEnd:''}",
+            response:"Class Created",
+            error:"DB Error Detail - 400",
+        },
+        {
+            title:"Update Class Endpoint",
+            url:"/classes/create",
+            method:"PUT",
+            headers:"{authorization:'sessionToken'}",
+            payload:"{classId:'',classDate:'',classStart:'',classEnd:''}",
+            response:"Class Updated",
+            error:"DB Error Detail - 400",
+        },
+        {
+            title:"Delete Class Endpoint",
+            url:"/classes/delete/:id",
+            method:"DELETE",
+            headers:"{authorization:'sessionToken'}",
+            payload:"None",
+            response:"Class Deleted",
+            error:"DB Error Detail - 400",
+        },
+        {
+            title:"Get Class By Id Endpoint",
+            url:"/classes/get/:id",
+            method:"GET",
+            headers:"{authorization:'sessionToken'}",
+            payload:"None",
+            response:"{class_id:'',teacher_id:'',class_date:'',class_start:'',class_end:''}",
+            error:"DB Error Detail - 400",
+        },
+        {
+            title:"Get All Class Endpoint",
+            url:"/classes/get",
+            method:"GET",
+            headers:"{authorization:'sessionToken'}",
+            payload:"None",
+            response:"[{class_id:'',teacher_id:'',class_date:'',class_start:'',class_end:''}]",
+            error:"DB Error Detail - 400",
+        },
+        {
+            title:"Participation Management Endpoints",
+            id:"participationManagement"
+        },
+        {
+            title:"Create Participation Endpoint",
+            url:"/participations/create",
+            method:"POST",
+            headers:"{authorization:'sessionToken'}",
+            payload:"{'classId':'','studentId':''}",
+            response:"Participation Created",
+            error:"DB Error Detail - 400",
+        },
+        {
+            title:"Update Participation Endpoint",
+            url:"/participations/update",
+            method:"PUT",
+            headers:"{authorization:'sessionToken'}",
+            payload:"{'isAllowed':true,'participationId':}",
+            response:"Participation Updated",
+            error:"DB Error Detail - 400",
+        },
+        {
+            title:"Delete Participation Endpoint",
+            url:"/participations/delete/:studentId&:classId",
+            method:"DELETE",
+            headers:"{authorization:'sessionToken'}",
+            payload:"None",
+            response:"Participation Deleted",
+            error:"DB Error Detail - 400",
+        },
+        {
+            title:"Get participations By Student Id Endpoint",
+            url:"/participations/getbystudent/:studentId",
+            method:"GET",
+            headers:"{authorization:'sessionToken'}",
+            payload:"None",
+            response:"[{'participation_id': '','class_id': '','student_id': '','is_allowed': ''}]",
+            error:"DB Error Detail - 400",
+        },
+        {
+            title:"Get participations By Class Id Endpoint",
+            url:"/participations/getbystudent/:classId",
+            method:"GET",
+            headers:"{authorization:'sessionToken'}",
+            payload:"None",
+            response:"[{'participation_id': '','class_id': '','student_id': '','is_allowed': ''}]",
+            error:"DB Error Detail - 400",
+        },
+        {
+            title:"Get participations By Student Id  and Class Id Endpoint",
+            url:"/participations/get/:studentId&:classId",
+            method:"GET",
+            headers:"{authorization:'sessionToken'}",
+            payload:"None",
+            response:"[{'participation_id': '','class_id': '','student_id': '','is_allowed': ''}]",
+            error:"DB Error Detail - 400",
+        },
+        
+    ]
+    const render = () =>{
+        apiJSON.forEach((j)=>{
+            let div=``
+            if(j.id){
+                div=`<div class="mt-3 mb-3 p-3 border rounded bg-dark text-white" id="`+j.id+`">
+                    `+j.title+`
+                    <div>`
+            }
+            else{
+                div = `
+                    <div class="mt-3 mb-3 p-3 border rounded bg-light">
+                        <div style="display:flex;">
+                            <h5 class="text-secondary mr-3">`+j.title+`</h5> |
+                            <h5 class="text-danger mr-3 ml-3">`+j.url+`</h5> |
+                            <h5 class="text-success ml-3">`+j.method+`</h5>
+                        </div>
+                        <hr>
+                        <h5 class="text-secondary">Headers</h5>
+                        <div class="box">`+j.headers+`</div>
+                        <h5 class="text-secondary">Payload</h5>
+                        <div class="box">`+j.payload+`</div>
+                        <h5 class="text-secondary">Response</h5>
+                        <div class="box">`+j.response+`</div>
+                        <h5 class="text-secondary">Error</h5>
+                        <div class="box">`+j.error+`</div>
+                    </div>
+                
+                `
+            }
+            $('#main').append(div)
+        })
+    }
+
+    render()
+
+</script>
